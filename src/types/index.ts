@@ -77,3 +77,35 @@ export interface WalletPayload {
   balance: number;
   type: string;
 }
+
+export interface CategorySummaryDTO {
+  categoryName: string;
+  totalAmount: number;
+}
+
+export interface WalletResponseDTO {
+  id: number;
+  name: string;
+  balance: number;
+  type: string;
+}
+
+export interface TransactionResponseDTO {
+  id: number;
+  amount: number;
+  type: "INCOME" | "EXPENSE" | "TRANSFER";
+  date: string;
+  categoryName: string | null;
+  walletName: string | null;
+}
+
+export interface DashboardSummaryDTO {
+  totalBalance: number;
+  totalMonthlyIncome: number;
+  totalMonthlyExpenses: number;
+  netSavings: number;
+  expensesByCategory: CategorySummaryDTO[];
+  incomeBySource: CategorySummaryDTO[];
+  walletBalances: WalletResponseDTO[];
+  recentTransactions: TransactionResponseDTO[];
+}
