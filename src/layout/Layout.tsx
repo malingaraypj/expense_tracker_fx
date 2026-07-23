@@ -10,12 +10,13 @@ import {
   Settings,
   LogOut,
 } from "lucide-react";
+import { NavLink } from "react-router-dom";
 
 interface Props {
   children: React.ReactNode;
 }
 
-export const DashboardLayout: React.FC<Props> = ({ children }) => {
+export const Layout: React.FC<Props> = ({ children }) => {
   return (
     <div className="min-h-screen bg-slate-50 flex fixed left-0 right-0 top-0 bottom-0">
       {/* Sidebar Navigation */}
@@ -31,11 +32,11 @@ export const DashboardLayout: React.FC<Props> = ({ children }) => {
 
 function Sidebar() {
   const navItems = [
-    { label: "Dashboard", icon: LayoutDashboard, active: true },
-    { label: "Wallets", icon: Wallet, active: false },
-    { label: "Categories", icon: Tag, active: false },
-    { label: "Analytics", icon: BarChart3, active: false },
-    { label: "Settings", icon: Settings, active: false },
+    { label: "Dashboard", icon: LayoutDashboard, active: true, url: "/" },
+    { label: "Wallets", icon: Wallet, active: false, url: "/wallets" },
+    { label: "Categories", icon: Tag, active: false, url: "/categories" },
+    { label: "Analytics", icon: BarChart3, active: false, url: "/analytics" },
+    { label: "Settings", icon: Settings, active: false, url: "/settings" },
   ];
   return (
     <aside className="w-64 bg-white border-r border-slate-200 flex flex-col justify-between md:flex">
@@ -48,18 +49,20 @@ function Sidebar() {
         </div>
         <nav className="space-y-1">
           {navItems.map((item) => (
-            <a
+            <NavLink
               key={item.label}
-              href={`#${item.label.toLowerCase()}`}
-              className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${
-                item.active
-                  ? "bg-slate-100 text-slate-900 font-semibold"
-                  : "text-slate-500 hover:bg-slate-50 hover:text-slate-900"
-              }`}
+              to={item.url}
+              className={({ isActive }) =>
+                `flex items-center gap-3 px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+                  isActive
+                    ? "bg-slate-100 text-slate-900 font-semibold"
+                    : "text-slate-500 hover:bg-slate-50 hover:text-slate-900"
+                }`
+              }
             >
               <item.icon className="w-4 h-4" />
               {item.label}
-            </a>
+            </NavLink>
           ))}
         </nav>
       </div>

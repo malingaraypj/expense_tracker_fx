@@ -7,7 +7,7 @@ import { formatINR } from "../../utils/formatters";
 // import { IconRenderer } from '../../utils/IconRenderer';
 import { Edit2, Trash2, ArrowRight, ArrowLeft, PlusCircle } from "lucide-react";
 import { type TransactionDTO } from "../../types";
-import { TransactionModal } from "./transactionModal";
+import { TransactionModal } from "@/components/Modals/transactionModal";
 
 export const TransactionTable: React.FC = () => {
   const [page, setPage] = useState(0);

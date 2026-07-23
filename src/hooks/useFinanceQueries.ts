@@ -7,6 +7,7 @@ import {
   type PaginatedResponse,
   type TransactionPayload,
   type ApiErrorResponse,
+  type WalletPayload,
 } from "../types";
 import toast from "react-hot-toast";
 import type { AxiosError } from "axios";
@@ -89,4 +90,53 @@ export const useTransactionMutations = () => {
   });
 
   return { createTransaction, updateTransaction, deleteTransaction };
+};
+
+export const useWalletMutations = () => {
+  const queryClient = useQueryClient();
+
+  const createWallet = useMutation({
+    mutationFn: async (payload: WalletPayload) => {
+      const { data } = await api.post("/wallets", payload);
+      return data;
+    },
+    onSuccess: () => {
+      // This tells TanStack Query to refetch the wallets list instantly
+      queryClient.invalidateQueries({ queryKey: ["wallets"] });
+    },
+  });
+
+  const updateWallet = useMutation({
+    mutationFn: async ({
+      id,
+      payload,
+    }: {
+      id: number;
+      payload: Partial<WalletPayload>;
+    }) => {
+      const { data } = await api.put(`/wallets/${id}`, payload);
+      return data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["wallets"] });
+    },
+  });
+
+  const deleteWallet = useMutation({
+    mutationFn: async (id: number) => {
+      await api.delete(`/wallets/${id}`);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["wallets"] });
+      // You might also want to invalidate transactions,
+      // since deleting a wallet usually affects transaction history.
+      queryClient.invalidateQueries({ queryKey: ["transactions"] });
+    },
+  });
+
+  return {
+    createWallet,
+    updateWallet,
+    deleteWallet,
+  };
 };

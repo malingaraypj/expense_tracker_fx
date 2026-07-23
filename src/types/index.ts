@@ -71,3 +71,9 @@ export interface ApiErrorResponse {
   message: string;
   path?: string;
 }
+
+export interface WalletPayload {
+  name: string;
+  balance: number;
+  type: string;
+}
